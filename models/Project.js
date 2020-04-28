@@ -64,6 +64,7 @@ const ProjectSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
+        default: 'NEW',
         enum: [
             'NEW',
             'ACTIVE',
