@@ -1,4 +1,5 @@
 const Project = require('../models/Project');
+const ErrorResponse = require('../shared/errors/errorResponse');
 
 //@desc     Get all projects
 //@route    GET /api/v1/projects
@@ -12,9 +13,7 @@ exports.getProjects = async (req, res, next) => {
             data: projects
         })
     } catch (error) {
-        res.status(400).json({
-            success: false
-        })
+        return next(error);
     }
 }
 
@@ -25,19 +24,14 @@ exports.getProject = async (req, res, next) => {
     try {
         const project = await Project.findById(req.params.id);
         if (!project) {
-            res.status(404).json({
-                success: false,
-                message: "Not found"
-            })
+            return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404));
         }
         res.status(200).json({
             success: true,
             data: project
         })
     } catch (error) {
-        res.status(400).json({
-            success: false
-        })
+        return next(error);
     }
 }
 
@@ -52,10 +46,7 @@ exports.createProject = async (req, res, next) => {
             data: newProject
         })
     } catch (error) {
-        res.status(400).json({
-            success: false,
-            error: error.message
-        })
+        return next(error);
     }
 }
 
@@ -70,10 +61,7 @@ exports.updateProject = async (req, res, next) => {
         });
 
         if (!projectToUpdate) {
-            res.status(404).json({
-                success: false,
-                message: "Not found"
-            })
+            return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404));
         }
 
         res.status(200).json({
@@ -81,9 +69,7 @@ exports.updateProject = async (req, res, next) => {
             data: projectToUpdate
         })
     } catch (error) {
-        res.status(400).json({
-            success: false
-        })
+        return next(error);
     }
 }
 
@@ -95,10 +81,7 @@ exports.deleteProject = async (req, res, next) => {
         const projectToDelete = await Project.findByIdAndDelete(req.params.id);
 
         if (!projectToDelete) {
-            res.status(404).json({
-                success: false,
-                message: "Not found"
-            })
+            return next(new ErrorResponse(`Project with id ${req.params.id} not found`, 404));
         }
 
         res.status(200).json({
@@ -106,8 +89,6 @@ exports.deleteProject = async (req, res, next) => {
             data: {}
         })
     } catch (error) {
-        res.status(400).json({
-            success: false
-        })
+        return next(error);
     }
 }
