@@ -1,0 +1,18 @@
+[{
+        "peopleNeeded": [],
+        "status": "NEW",
+        "title": "First project",
+        "description": "Description of my third project",
+        "gitRepoUrl": "http://github.com",
+        "createdAt": "2020-04-29T18:37:08.745Z",
+        "slug": "first-project"
+    },
+    {
+        "title": "Second project",
+        "description": "Description of my second project",
+        "gitRepoUrl": "http://github.com",
+        "status": "NEW",
+        "charUrl": "telegramChat",
+        "boardUrl": "http://google.ru"
+    }
+]
