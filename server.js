@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 //Load env variables
 dotenv.config({
@@ -17,6 +18,9 @@ const projectRouter = require('./routes/projects');
 //Create app
 const app = express();
 
+//JSON parser
+app.use(express.json());
+
 //Dev logging
 if (process.env.NODE_ENV == 'DEVELOPMENT') {
   app.use(morgan('dev'));
@@ -25,13 +29,16 @@ if (process.env.NODE_ENV == 'DEVELOPMENT') {
 //Register routes
 app.use('/api/v1/projects', projectRouter);
 
+
+app.use(errorHandler);
+
 //Server startup
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   console.log(
     `Server listening on port ${PORT} in ${process.env.NODE_ENV} mode!`.yellow
-      .bold
+    .bold
   );
 });
 
