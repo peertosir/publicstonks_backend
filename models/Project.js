@@ -52,11 +52,6 @@ const ProjectSchema = new mongoose.Schema({
       'URL is not valid',
     ],
   },
-  creator: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true
-  },
   peopleNeeded: {
     type: [String],
     required: false,
