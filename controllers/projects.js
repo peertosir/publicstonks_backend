@@ -27,7 +27,7 @@ exports.getProjects = asyncHandler(async (req, res, next) => {
     const finalQuery = JSON.stringify(reqQuery).replace(/\b(in)\b/g, match => `$${match}`);
 
     //Execute final query to mongoDB
-    const projects = await Project.find(JSON.parse(query))
+    const projects = await Project.find(JSON.parse(finalQuery))
         .skip(offset)
         .limit(limit)
         .select(allProjectsResponse);
