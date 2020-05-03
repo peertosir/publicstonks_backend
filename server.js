@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
-
+const AuthController = require('./controllers/auth/authentication')
 //Load env variables
 dotenv.config({
   path: './config/config.env',
@@ -33,6 +33,9 @@ app.use('/api/v1/users', userRouter);
 
 
 app.use(errorHandler);
+
+//Registration
+app.use('/api/auth', AuthController)
 
 //Server startup
 const PORT = process.env.PORT || 5000;

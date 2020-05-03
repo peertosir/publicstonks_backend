@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        required: [true, "Last name is required"]
+        required: [true, "Last name is a required field"]
     },
     email: {
         type: String,
@@ -54,6 +54,4 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-mongoose.model('User', UserSchema);
-
-module.exports = mongoose.model('User');
+module.exports = mongoose.model('User', UserSchema);
