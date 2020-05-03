@@ -1,5 +1,5 @@
 [{
-        "peopleNeeded": [],
+        "peopleNeeded": ["Designer", "QA"],
         "status": "NEW",
         "title": "First project",
         "description": "Description of my third project",
@@ -13,6 +13,16 @@
         "gitRepoUrl": "http://github.com",
         "status": "NEW",
         "charUrl": "telegramChat",
-        "boardUrl": "http://google.ru"
+        "boardUrl": "http://google.ru",
+        "peopleNeeded": ["Designer"]
+    },
+    {
+        "title": "Third project",
+        "description": "Description of my third project",
+        "gitRepoUrl": "http://github.com",
+        "status": "ACTIVE",
+        "charUrl": "weChat",
+        "boardUrl": "http://google.com",
+        "peopleNeeded": ["Developer", "QA"]
     }
 ]

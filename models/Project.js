@@ -76,7 +76,9 @@ const ProjectSchema = new mongoose.Schema({
 
 //create slug from title
 ProjectSchema.pre('save', function (next) {
-  this.slug = slugify(this.title, { lower: true });
+  this.slug = slugify(this.title, {
+    lower: true
+  });
   next();
 });
 

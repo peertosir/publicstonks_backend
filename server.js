@@ -14,6 +14,7 @@ connectDB();
 
 //Routes
 const projectRouter = require('./routes/projects');
+const userRouter = require('./routes/users');
 
 //Create app
 const app = express();
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV == 'DEVELOPMENT') {
 
 //Register routes
 app.use('/api/v1/projects', projectRouter);
+app.use('/api/v1/users', userRouter);
 
 
 app.use(errorHandler);
