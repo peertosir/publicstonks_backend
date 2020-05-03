@@ -27,7 +27,7 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
     const finalQuery = JSON.stringify(reqQuery).replace(/\b(in)\b/g, match => `$${match}`);
 
     //Execute final query to mongoDB
-    const users = await User.find(JSON.parse(query))
+    const users = await User.find(JSON.parse(finalQuery))
         .skip(offset)
         .limit(limit)
         .select(allUsersResponse);
