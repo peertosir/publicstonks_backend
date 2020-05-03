@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
 const Project = require('./models/Project');
-
+const User = require('./models/User');
 
 dotenv.config({
     path: './config/config.env'
@@ -34,6 +34,7 @@ const importData = async () => {
 const deleteData = async () => {
     try {
         await Project.deleteMany();
+        await User.deleteMany();
         console.log("Data Destroyed".red.underline.bold);
         process.exit();
     } catch (err) {
