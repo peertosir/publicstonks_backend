@@ -7,23 +7,22 @@ const bcrypt = require('bcryptjs');
 
 exports.register = asyncHandler(async (req, res, next) => {
     const {password, firstName, lastName, email} = req.body
-    console.log(req.body)
-    console.log(password)
 
     const user = await User.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
-    },
-     (err, user) => {
-         //addcode
-        if (err && err.name == "MongoError" && err.keyValue.email) return res.status(409).send('Email exists')
-        if (err) return res.status(500).send('Some problems with registration')
+    })
 
+    // function (err, user) {
+    //      //addcode
+    //     if (err && err.name == "MongoError" && err.keyValue.email) return res.status(409).send('Email exists')
+    //     if (err) return res.status(500).send('Some problems with registration')
+    // })
         const userId = user._id
         res.status(200).send({success:true,userId: userId})
-    })
+
 })
 
 exports.login = asyncHandler(async (req, res, next) => {
