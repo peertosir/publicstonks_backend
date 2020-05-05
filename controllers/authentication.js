@@ -1,66 +1,38 @@
-const router = require('express').Router()
 const bodyParser = require('body-parser')
+const asyncHandler = require('../middleware/asyncHandler');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const config = require('../config/config.json');
+const bcrypt = require('bcryptjs');
 
-router.use(bodyParser.urlencoded({extended:false}))
-router.use(bodyParser.json())
+exports.register = asyncHandler(async (req, res, next) => {
+    const {password, firstName, lastName, email} = req.body
+    console.log(req.body)
+    console.log(password)
 
-router.post('/register', function(req,res) {
-    const hashedPassword = bcrypt.hashSync(req.body.password, 8)
-
-    User.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: hashedPassword,
+    const user = await User.create({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
     },
-    function (err, user) {
-        if (err) return res.status(500).send('There was a problem registering the user.')
+     (err, user) => {
+        if (err && err.name == "MongoError" && err.keyValue.email) return res.status(409).send('Email exists')
+        if (err) return res.status(500).send('Some problems with registration')
 
-        const token = jwt.sign({id:user._id}, config.secret, {
-            expiresIn: 86400
-        })
-        res.status(200).send({auth:true,token:token})
+        const userId = user._id
+        res.status(200).send({success:true,userId: userId})
     })
 })
 
-router.post("/login", function (req, res) {
-    User.findOne({email: req.body.email}, function (err,user) {
+exports.login = asyncHandler(async (req, res, next) => {
+    await User.findOne({email: req.body.email}, async(err,user) => {
         if (err) return res.status(500).send('Error on the server.')
         if (!user) return res.status(404).send('No user found.')
 
-       const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
-        if (!passwordIsValid) return res.status(401).send({auth:false,token:null})
+       const passwordIsValid = await bcrypt.compareSync(req.body.password, user.password)
+        if (!passwordIsValid) return res.status(401).send({success:false})
 
-        const token = jwt.sign({id: user._id}, config.secret, {
-            expiresIn: 86400
-        })
-
-        res.status(200).send({auth:true,token:token})
+        res.status(200).send({success:true})
     })
 })
-
-router.get('/me', function (req,res) {
-    const token = req.headers['x-access-token']
-    if (!token) return res.status(401).send({auth:false, message:'No token provided'})
-
-    jwt.verify(token, config.secret, function(err, decoded) {
-        if (err) return res.status(500).send({auth:false, message: 'Failed to authenticate token'})
-
-    User.findById(decoded.id, {password: 0}, function(err,user){
-        if (err) return res.status(500).send('There was a problem finding the user')
-        if (!user) return res.status(404).send("No user found.")
- 
-        res.status(200).send(user)
-    })
-    })
-})
-
-router.get('/logout', function(req,res) {
-    res.status(200).send({auth:false, token:null})
-})
-
-module.exports = router

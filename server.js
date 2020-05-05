@@ -1,10 +1,11 @@
+const cors = require('cors')
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
-const AuthController = require('./controllers/authentication')
+
 //Load env variables
 dotenv.config({
   path: './config/config.env',
@@ -18,6 +19,7 @@ const userRouter = require('./routes/users');
 
 //Create app
 const app = express();
+app.use(cors())
 
 //JSON parser
 app.use(express.json());
@@ -35,7 +37,8 @@ app.use('/api/v1/users', userRouter);
 app.use(errorHandler);
 
 //Registration
-app.use('/api/auth', AuthController)
+const authRouter = require('./routes/authentication')
+app.use('/api/auth', authRouter)
 
 //Server startup
 const PORT = process.env.PORT || 5000;
