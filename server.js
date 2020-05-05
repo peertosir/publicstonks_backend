@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
-const AuthController = require('./controllers/auth/authentication')
+const AuthController = require('./controllers/authentication')
 //Load env variables
 dotenv.config({
   path: './config/config.env',

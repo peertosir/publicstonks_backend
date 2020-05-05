@@ -40,7 +40,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is a required field"],
         minlength: 6,
-        select: false
     },
     resetPasswordToken: String,
     resetPasswordExpired: Date,
