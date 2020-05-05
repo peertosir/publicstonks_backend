@@ -17,6 +17,7 @@ exports.register = asyncHandler(async (req, res, next) => {
         password: password,
     },
      (err, user) => {
+         //addcode
         if (err && err.name == "MongoError" && err.keyValue.email) return res.status(409).send('Email exists')
         if (err) return res.status(500).send('Some problems with registration')
 
@@ -26,13 +27,11 @@ exports.register = asyncHandler(async (req, res, next) => {
 })
 
 exports.login = asyncHandler(async (req, res, next) => {
-    await User.findOne({email: req.body.email}, async(err,user) => {
-        if (err) return res.status(500).send('Error on the server.')
-        if (!user) return res.status(404).send('No user found.')
+    const user = await User.findOne({email: req.body.email})
+        if (!user) return res.status(404).send({"success":false, "message":'No user found.'})
 
        const passwordIsValid = await bcrypt.compareSync(req.body.password, user.password)
         if (!passwordIsValid) return res.status(401).send({success:false})
 
         res.status(200).send({success:true})
-    })
 })
